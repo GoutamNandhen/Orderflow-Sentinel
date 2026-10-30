@@ -1,0 +1,17 @@
+{
+  "passed": true,
+  "timestamp": "2026-10-30T17:16:23.153Z",
+  "checks": {
+    "actual_backend_process_restart": true,
+    "pending_recovery_resumed": true,
+    "independent_tabs_reconnected": true,
+    "private_customer_snapshot_resynchronised": true,
+    "operator_session_survived": true,
+    "sequence_preserved": true,
+    "stock_reservation_preserved": true,
+    "payment_not_double_charged": true,
+    "attempt_count": 3,
+    "fulfilment": "UNFULFILLED"
+  },
+  "appErrors": []
+}

@@ -1,0 +1,402 @@
+{
+  "API_TIMEOUT": {
+    "title": "API 5xx / 504 timeout",
+    "detection_signals": [
+      "HTTP 500/502/503/504",
+      "response_time_ms >= 5000"
+    ],
+    "explanation": "The simulated service timed out before confirming its operation.",
+    "candidate_actions": [
+      "RETRY"
+    ],
+    "prerequisites": {
+      "RETRY": "Idempotent service operation, fewer than three attempts, circuit permits request",
+      "CHECK_PAYMENT": "Local payment ledger available; never initiates another debit",
+      "CONFIRM_ORDER": "Captured reconciled payment or COD",
+      "REFUND": "Captured debit, no existing refund, explicit operator confirmation",
+      "CANCEL": "No captured/unknown debit, explicit operator confirmation",
+      "OFFER_SUBSTITUTE": "Verified equal-price grocery substitute; never medicines or infant formula; customer acceptance",
+      "CORRECT_ADDRESS": "Explicit local lookup entry and customer acceptance",
+      "NEW_SLOT": "Customer acceptance",
+      "REASSIGN_STORE": "Local simulated backup hub verifies same items; operator approval"
+    },
+    "reversibility": {
+      "RETRY": true,
+      "REFUND": false,
+      "CANCEL": false
+    },
+    "approval_requirements": "Numeric decision policy plus explicit restrictions. Store transfers need operator approval; financial cancellation/refund needs confirmation; changed goods/address/slot need customer acceptance. Manual incidents cannot use approve endpoint.",
+    "customer_message": "Our delivery service is taking longer than expected. We are safely retrying.",
+    "retry_limits": {
+      "max_attempts": 3,
+      "backoff_seconds": [
+        1,
+        2,
+        4
+      ]
+    },
+    "escalation_path": "Local operator queue; P1 after three failed recovery attempts; no external paging integration"
+  },
+  "RATE_LIMIT": {
+    "title": "HTTP 429 rate limit",
+    "detection_signals": [
+      "HTTP 429",
+      "Retry-After signal"
+    ],
+    "explanation": "The simulated gateway is rate limiting requests.",
+    "candidate_actions": [
+      "RETRY"
+    ],
+    "prerequisites": {
+      "RETRY": "Idempotent service operation, fewer than three attempts, circuit permits request",
+      "CHECK_PAYMENT": "Local payment ledger available; never initiates another debit",
+      "CONFIRM_ORDER": "Captured reconciled payment or COD",
+      "REFUND": "Captured debit, no existing refund, explicit operator confirmation",
+      "CANCEL": "No captured/unknown debit, explicit operator confirmation",
+      "OFFER_SUBSTITUTE": "Verified equal-price grocery substitute; never medicines or infant formula; customer acceptance",
+      "CORRECT_ADDRESS": "Explicit local lookup entry and customer acceptance",
+      "NEW_SLOT": "Customer acceptance",
+      "REASSIGN_STORE": "Local simulated backup hub verifies same items; operator approval"
+    },
+    "reversibility": {
+      "RETRY": true,
+      "REFUND": false,
+      "CANCEL": false
+    },
+    "approval_requirements": "Numeric decision policy plus explicit restrictions. Store transfers need operator approval; financial cancellation/refund needs confirmation; changed goods/address/slot need customer acceptance. Manual incidents cannot use approve endpoint.",
+    "customer_message": "We are waiting briefly before safely retrying the service.",
+    "retry_limits": {
+      "max_attempts": 3,
+      "backoff_seconds": [
+        1,
+        2,
+        4
+      ]
+    },
+    "escalation_path": "Local operator queue; P1 after three failed recovery attempts; no external paging integration"
+  },
+  "TOKEN_EXPIRED": {
+    "title": "HTTP 401 expired token",
+    "detection_signals": [
+      "HTTP 401",
+      "expired service credential"
+    ],
+    "explanation": "A local simulated service token expired.",
+    "candidate_actions": [
+      "REFRESH_TOKEN",
+      "RETRY"
+    ],
+    "prerequisites": {
+      "RETRY": "Idempotent service operation, fewer than three attempts, circuit permits request",
+      "CHECK_PAYMENT": "Local payment ledger available; never initiates another debit",
+      "CONFIRM_ORDER": "Captured reconciled payment or COD",
+      "REFUND": "Captured debit, no existing refund, explicit operator confirmation",
+      "CANCEL": "No captured/unknown debit, explicit operator confirmation",
+      "OFFER_SUBSTITUTE": "Verified equal-price grocery substitute; never medicines or infant formula; customer acceptance",
+      "CORRECT_ADDRESS": "Explicit local lookup entry and customer acceptance",
+      "NEW_SLOT": "Customer acceptance",
+      "REASSIGN_STORE": "Local simulated backup hub verifies same items; operator approval"
+    },
+    "reversibility": {
+      "REFRESH_TOKEN": true,
+      "RETRY": true,
+      "REFUND": false,
+      "CANCEL": false
+    },
+    "approval_requirements": "Numeric decision policy plus explicit restrictions. Store transfers need operator approval; financial cancellation/refund needs confirmation; changed goods/address/slot need customer acceptance. Manual incidents cannot use approve endpoint.",
+    "customer_message": "A service connection is being refreshed. Your credentials are unaffected.",
+    "retry_limits": {
+      "max_attempts": 3,
+      "backoff_seconds": [
+        1,
+        2,
+        4
+      ]
+    },
+    "escalation_path": "Local operator queue; P1 after three failed recovery attempts; no external paging integration"
+  },
+  "ADDRESS_REJECTED": {
+    "title": "Rejected address / pincode",
+    "detection_signals": [
+      "HTTP 422",
+      "local pincode rejection"
+    ],
+    "explanation": "The simulated delivery service rejected the address or pincode.",
+    "candidate_actions": [
+      "CORRECT_ADDRESS",
+      "NEW_SLOT"
+    ],
+    "prerequisites": {
+      "RETRY": "Idempotent service operation, fewer than three attempts, circuit permits request",
+      "CHECK_PAYMENT": "Local payment ledger available; never initiates another debit",
+      "CONFIRM_ORDER": "Captured reconciled payment or COD",
+      "REFUND": "Captured debit, no existing refund, explicit operator confirmation",
+      "CANCEL": "No captured/unknown debit, explicit operator confirmation",
+      "OFFER_SUBSTITUTE": "Verified equal-price grocery substitute; never medicines or infant formula; customer acceptance",
+      "CORRECT_ADDRESS": "Explicit local lookup entry and customer acceptance",
+      "NEW_SLOT": "Customer acceptance",
+      "REASSIGN_STORE": "Local simulated backup hub verifies same items; operator approval"
+    },
+    "reversibility": {
+      "CORRECT_ADDRESS": true,
+      "NEW_SLOT": true,
+      "REFUND": false,
+      "CANCEL": false
+    },
+    "approval_requirements": "Numeric decision policy plus explicit restrictions. Store transfers need operator approval; financial cancellation/refund needs confirmation; changed goods/address/slot need customer acceptance. Manual incidents cannot use approve endpoint.",
+    "customer_message": "Please review and accept an available address correction or a new slot.",
+    "retry_limits": {
+      "max_attempts": 3,
+      "backoff_seconds": [
+        1,
+        2,
+        4
+      ]
+    },
+    "escalation_path": "Local operator queue; P1 after three failed recovery attempts; no external paging integration"
+  },
+  "PAYMENT_DECLINED": {
+    "title": "Payment failure / bank decline",
+    "detection_signals": [
+      "known decline; no captured debit",
+      "HTTP 402"
+    ],
+    "explanation": "The simulated bank declined payment; no money was captured.",
+    "candidate_actions": [
+      "SEND_PAYMENT_LINK",
+      "SWITCH_GATEWAY",
+      "CONFIRM_ORDER"
+    ],
+    "prerequisites": {
+      "RETRY": "Idempotent service operation, fewer than three attempts, circuit permits request",
+      "CHECK_PAYMENT": "Local payment ledger available; never initiates another debit",
+      "CONFIRM_ORDER": "Captured reconciled payment or COD",
+      "REFUND": "Captured debit, no existing refund, explicit operator confirmation",
+      "CANCEL": "No captured/unknown debit, explicit operator confirmation",
+      "OFFER_SUBSTITUTE": "Verified equal-price grocery substitute; never medicines or infant formula; customer acceptance",
+      "CORRECT_ADDRESS": "Explicit local lookup entry and customer acceptance",
+      "NEW_SLOT": "Customer acceptance",
+      "REASSIGN_STORE": "Local simulated backup hub verifies same items; operator approval"
+    },
+    "reversibility": {
+      "SEND_PAYMENT_LINK": true,
+      "SWITCH_GATEWAY": true,
+      "CONFIRM_ORDER": true,
+      "REFUND": false,
+      "CANCEL": false
+    },
+    "approval_requirements": "Numeric decision policy plus explicit restrictions. Store transfers need operator approval; financial cancellation/refund needs confirmation; changed goods/address/slot need customer acceptance. Manual incidents cannot use approve endpoint.",
+    "customer_message": "Payment was declined in the simulation. Please choose an offered payment option.",
+    "retry_limits": {
+      "max_attempts": 3,
+      "backoff_seconds": [
+        1,
+        2,
+        4
+      ]
+    },
+    "escalation_path": "Local operator queue; P1 after three failed recovery attempts; no external paging integration"
+  },
+  "UNMATCHED_DEBIT": {
+    "title": "Money debited but order unconfirmed",
+    "detection_signals": [
+      "local debit with no confirmation",
+      "stuck payment state"
+    ],
+    "explanation": "The simulated ledger has a debit whose capture result must be reconciled before fulfilment or refund.",
+    "candidate_actions": [
+      "CHECK_PAYMENT",
+      "CONFIRM_ORDER"
+    ],
+    "prerequisites": {
+      "RETRY": "Idempotent service operation, fewer than three attempts, circuit permits request",
+      "CHECK_PAYMENT": "Local payment ledger available; never initiates another debit",
+      "CONFIRM_ORDER": "Captured reconciled payment or COD",
+      "REFUND": "Captured debit, no existing refund, explicit operator confirmation",
+      "CANCEL": "No captured/unknown debit, explicit operator confirmation",
+      "OFFER_SUBSTITUTE": "Verified equal-price grocery substitute; never medicines or infant formula; customer acceptance",
+      "CORRECT_ADDRESS": "Explicit local lookup entry and customer acceptance",
+      "NEW_SLOT": "Customer acceptance",
+      "REASSIGN_STORE": "Local simulated backup hub verifies same items; operator approval"
+    },
+    "reversibility": {
+      "CHECK_PAYMENT": true,
+      "CONFIRM_ORDER": true,
+      "REFUND": false,
+      "CANCEL": false
+    },
+    "approval_requirements": "Numeric decision policy plus explicit restrictions. Store transfers need operator approval; financial cancellation/refund needs confirmation; changed goods/address/slot need customer acceptance. Manual incidents cannot use approve endpoint.",
+    "customer_message": "We are checking your simulated payment so you are not charged twice.",
+    "retry_limits": {
+      "max_attempts": 3,
+      "backoff_seconds": [
+        1,
+        2,
+        4
+      ]
+    },
+    "escalation_path": "Local operator queue; P1 after three failed recovery attempts; no external paging integration"
+  },
+  "DUPLICATE_ORDER": {
+    "title": "Duplicate order / suspected double charge",
+    "detection_signals": [
+      "HTTP 409",
+      "suspected duplicate debit signal"
+    ],
+    "explanation": "A simulated duplicate-order signal requires ledger investigation. Order idempotency prevents an actual second booking.",
+    "candidate_actions": [
+      "CHECK_PAYMENT",
+      "CONFIRM_ORDER"
+    ],
+    "prerequisites": {
+      "RETRY": "Idempotent service operation, fewer than three attempts, circuit permits request",
+      "CHECK_PAYMENT": "Local payment ledger available; never initiates another debit",
+      "CONFIRM_ORDER": "Captured reconciled payment or COD",
+      "REFUND": "Captured debit, no existing refund, explicit operator confirmation",
+      "CANCEL": "No captured/unknown debit, explicit operator confirmation",
+      "OFFER_SUBSTITUTE": "Verified equal-price grocery substitute; never medicines or infant formula; customer acceptance",
+      "CORRECT_ADDRESS": "Explicit local lookup entry and customer acceptance",
+      "NEW_SLOT": "Customer acceptance",
+      "REASSIGN_STORE": "Local simulated backup hub verifies same items; operator approval"
+    },
+    "reversibility": {
+      "CHECK_PAYMENT": true,
+      "CONFIRM_ORDER": true,
+      "REFUND": false,
+      "CANCEL": false
+    },
+    "approval_requirements": "Numeric decision policy plus explicit restrictions. Store transfers need operator approval; financial cancellation/refund needs confirmation; changed goods/address/slot need customer acceptance. Manual incidents cannot use approve endpoint.",
+    "customer_message": "We are investigating a possible duplicate signal. No additional payment will be attempted.",
+    "retry_limits": {
+      "max_attempts": 3,
+      "backoff_seconds": [
+        1,
+        2,
+        4
+      ]
+    },
+    "escalation_path": "Local operator queue; P1 after three failed recovery attempts; no external paging integration"
+  },
+  "OUT_OF_STOCK": {
+    "title": "Out of stock / stock mismatch",
+    "detection_signals": [
+      "HTTP 409",
+      "simulated shelf mismatch after reservation"
+    ],
+    "explanation": "A simulated local-hub shelf mismatch blocked picking; reserved catalogue stock remains accounted for.",
+    "candidate_actions": [
+      "REASSIGN_STORE",
+      "OFFER_SUBSTITUTE",
+      "NEW_SLOT"
+    ],
+    "prerequisites": {
+      "RETRY": "Idempotent service operation, fewer than three attempts, circuit permits request",
+      "CHECK_PAYMENT": "Local payment ledger available; never initiates another debit",
+      "CONFIRM_ORDER": "Captured reconciled payment or COD",
+      "REFUND": "Captured debit, no existing refund, explicit operator confirmation",
+      "CANCEL": "No captured/unknown debit, explicit operator confirmation",
+      "OFFER_SUBSTITUTE": "Verified equal-price grocery substitute; never medicines or infant formula; customer acceptance",
+      "CORRECT_ADDRESS": "Explicit local lookup entry and customer acceptance",
+      "NEW_SLOT": "Customer acceptance",
+      "REASSIGN_STORE": "Local simulated backup hub verifies same items; operator approval"
+    },
+    "reversibility": {
+      "REASSIGN_STORE": true,
+      "OFFER_SUBSTITUTE": true,
+      "NEW_SLOT": true,
+      "REFUND": false,
+      "CANCEL": false
+    },
+    "approval_requirements": "Numeric decision policy plus explicit restrictions. Store transfers need operator approval; financial cancellation/refund needs confirmation; changed goods/address/slot need customer acceptance. Manual incidents cannot use approve endpoint.",
+    "customer_message": "The local hub reported a stock issue. We are checking the same items at the demo backup hub.",
+    "retry_limits": {
+      "max_attempts": 3,
+      "backoff_seconds": [
+        1,
+        2,
+        4
+      ]
+    },
+    "escalation_path": "Local operator queue; P1 after three failed recovery attempts; no external paging integration"
+  },
+  "STORE_CLOSED": {
+    "title": "Store not accepting order",
+    "detection_signals": [
+      "HTTP 503",
+      "local store refusal"
+    ],
+    "explanation": "The simulated store is not currently accepting this order.",
+    "candidate_actions": [
+      "REASSIGN_STORE",
+      "NEW_SLOT"
+    ],
+    "prerequisites": {
+      "RETRY": "Idempotent service operation, fewer than three attempts, circuit permits request",
+      "CHECK_PAYMENT": "Local payment ledger available; never initiates another debit",
+      "CONFIRM_ORDER": "Captured reconciled payment or COD",
+      "REFUND": "Captured debit, no existing refund, explicit operator confirmation",
+      "CANCEL": "No captured/unknown debit, explicit operator confirmation",
+      "OFFER_SUBSTITUTE": "Verified equal-price grocery substitute; never medicines or infant formula; customer acceptance",
+      "CORRECT_ADDRESS": "Explicit local lookup entry and customer acceptance",
+      "NEW_SLOT": "Customer acceptance",
+      "REASSIGN_STORE": "Local simulated backup hub verifies same items; operator approval"
+    },
+    "reversibility": {
+      "REASSIGN_STORE": true,
+      "NEW_SLOT": true,
+      "REFUND": false,
+      "CANCEL": false
+    },
+    "approval_requirements": "Numeric decision policy plus explicit restrictions. Store transfers need operator approval; financial cancellation/refund needs confirmation; changed goods/address/slot need customer acceptance. Manual incidents cannot use approve endpoint.",
+    "customer_message": "The local store is unavailable. Our operator is arranging another demo hub or slot.",
+    "retry_limits": {
+      "max_attempts": 3,
+      "backoff_seconds": [
+        1,
+        2,
+        4
+      ]
+    },
+    "escalation_path": "Local operator queue; P1 after three failed recovery attempts; no external paging integration"
+  },
+  "RIDER_LATE": {
+    "title": "Rider late / delivery delay",
+    "detection_signals": [
+      "simulated rider lateness",
+      "delivery promise at risk"
+    ],
+    "explanation": "The simulated rider is late and the estimated delivery time has increased.",
+    "candidate_actions": [
+      "PRIORITY_RIDER",
+      "NEW_SLOT"
+    ],
+    "prerequisites": {
+      "RETRY": "Idempotent service operation, fewer than three attempts, circuit permits request",
+      "CHECK_PAYMENT": "Local payment ledger available; never initiates another debit",
+      "CONFIRM_ORDER": "Captured reconciled payment or COD",
+      "REFUND": "Captured debit, no existing refund, explicit operator confirmation",
+      "CANCEL": "No captured/unknown debit, explicit operator confirmation",
+      "OFFER_SUBSTITUTE": "Verified equal-price grocery substitute; never medicines or infant formula; customer acceptance",
+      "CORRECT_ADDRESS": "Explicit local lookup entry and customer acceptance",
+      "NEW_SLOT": "Customer acceptance",
+      "REASSIGN_STORE": "Local simulated backup hub verifies same items; operator approval"
+    },
+    "reversibility": {
+      "PRIORITY_RIDER": true,
+      "NEW_SLOT": true,
+      "REFUND": false,
+      "CANCEL": false
+    },
+    "approval_requirements": "Numeric decision policy plus explicit restrictions. Store transfers need operator approval; financial cancellation/refund needs confirmation; changed goods/address/slot need customer acceptance. Manual incidents cannot use approve endpoint.",
+    "customer_message": "Your simulated rider is delayed. We are reviewing a priority assignment or revised slot.",
+    "retry_limits": {
+      "max_attempts": 3,
+      "backoff_seconds": [
+        1,
+        2,
+        4
+      ]
+    },
+    "escalation_path": "Local operator queue; P1 after three failed recovery attempts; no external paging integration"
+  }
+}

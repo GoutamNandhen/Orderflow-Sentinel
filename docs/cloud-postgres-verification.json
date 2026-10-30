@@ -1,0 +1,14 @@
+{
+  "passed": true,
+  "timestamp": "2026-10-30T17:07:40.295013+00:00",
+  "isolated_schema": "verify_c8198511044c45b88e11f6b8c6a9cb8f",
+  "checks": {
+    "postgres_default_pattern_20_bookings_12_failures": true,
+    "postgres_concurrent_unique_bookings": true,
+    "postgres_idempotency": true,
+    "postgres_approval_history_csv_and_date_filters": true,
+    "postgres_reconciliation_and_asynchronous_refund": true,
+    "postgres_restart_preserves_sequence": true
+  },
+  "note": "Only a newly generated verification schema was used; application public schema was not modified."
+}

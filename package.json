@@ -1,0 +1,31 @@
+{
+  "name": "orderflow-sentinel",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev:shop": "npm --prefix shop-frontend run dev",
+    "dev:console": "npm --prefix console-frontend run dev",
+    "build": "npm --prefix shop-frontend run build && npm --prefix console-frontend run build",
+    "typecheck": "npm --prefix shop-frontend run typecheck && npm --prefix console-frontend run typecheck",
+    "test:browser": "node node_modules/@playwright/test/cli.js test"
+  },
+  "dependencies": {
+    "@fontsource/inter": "^5.2.8",
+    "lucide-react": "^0.468.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "recharts": "^3.3.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.1",
+    "@tailwindcss/vite": "^4.1.16",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "@vitejs/plugin-react": "^5.0.4",
+    "prettier": "^3.9.10",
+    "tailwindcss": "^4.1.16",
+    "typescript": "~5.9.3",
+    "vite": "^7.2.2"
+  }
+}

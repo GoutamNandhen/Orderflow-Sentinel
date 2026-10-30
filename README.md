@@ -25,7 +25,7 @@ Open these exact **localhost** URLs, in independent tabs in the same browser pro
 | Backend health | [http://localhost:8000/api/health](http://localhost:8000/api/health) |
 | Interactive API docs | [http://localhost:8000/docs](http://localhost:8000/docs) |
 
-Default operator password: **`sentinel-local-demo`**. Set `OPERATOR_PASSWORD` in a root `.env` copied from `.env.example` to change it. Console login creates a random, persistent 12-hour bearer session. The visual switcher is a convenience link, not authentication. Keep one backend worker and one instance of the backend.
+Set a private `OPERATOR_PASSWORD` in a root `.env` copied from `.env.example`. If it is unset locally, startup generates a credential in the ignored `backend/data/operator-password.local` file; read it on your machine to sign in. Hosted startup requires the private environment variable. Console login creates a random, persistent 12-hour bearer session. The visual switcher is a convenience link, not authentication. Keep one backend worker and one instance of the backend. Never publish credentials or paste them into chat.
 
 `start.ps1` starts hidden service processes, prints URLs, writes logs into `work/logs`, and keeps the parent PowerShell session open. Ctrl+C stops its child services. It refuses occupied ports. **Normal startup preserves the database and booking sequence.**
 
@@ -109,5 +109,5 @@ console-frontend/        Operator React + Vite + TypeScript application
 shared/                  Design tokens, components, API hooks and types
 tests/browser/           Playwright application and reference checks
 scripts/                 Windows setup/start/test and separate demo commands
-docs/                    Architecture, demo, evaluation, evidence, screenshots
+docs/                    Architecture, demo, evaluation, structured evidence
 ```

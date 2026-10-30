@@ -1,0 +1,15 @@
+{
+  "passed": true,
+  "base": "http://localhost:8002",
+  "timestamp": "2026-10-30T17:06:35.871Z",
+  "checks": {
+    "both_built_apps": true,
+    "private_operator_login": true,
+    "secure_or_local_websocket_connections": true,
+    "shared_customer_session": true,
+    "actual_timeout_recovery": true,
+    "delivery_not_falsely_completed": true,
+    "mobile_no_overflow": true,
+    "console_errors": 0
+  }
+}

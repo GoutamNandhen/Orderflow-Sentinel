@@ -1,0 +1,242 @@
+{
+  "version": "2026-10-30T135343.163392_0000-4b87dd",
+  "trained_at": "2026-10-30T13:53:43.163392+00:00",
+  "seed": 42,
+  "dataset_size": 5000,
+  "splits": {
+    "training": 3500,
+    "validation": 750,
+    "test": 750
+  },
+  "class_counts": {
+    "NONE": {
+      "all": 2023,
+      "test": 304
+    },
+    "API_TIMEOUT": {
+      "all": 307,
+      "test": 46
+    },
+    "RATE_LIMIT": {
+      "all": 324,
+      "test": 48
+    },
+    "TOKEN_EXPIRED": {
+      "all": 287,
+      "test": 43
+    },
+    "ADDRESS_REJECTED": {
+      "all": 295,
+      "test": 44
+    },
+    "PAYMENT_DECLINED": {
+      "all": 292,
+      "test": 44
+    },
+    "UNMATCHED_DEBIT": {
+      "all": 287,
+      "test": 43
+    },
+    "DUPLICATE_ORDER": {
+      "all": 298,
+      "test": 45
+    },
+    "OUT_OF_STOCK": {
+      "all": 310,
+      "test": 47
+    },
+    "STORE_CLOSED": {
+      "all": 290,
+      "test": 43
+    },
+    "RIDER_LATE": {
+      "all": 287,
+      "test": 43
+    }
+  },
+  "failure_target": "Initial service fault remains unresolved 5 minutes after prediction, under the synthetic normal recovery policy.",
+  "failure_metrics": {
+    "roc_auc": 0.8595081440765938,
+    "brier_score": 0.1451663374900818,
+    "log_loss": 0.4528885781764984,
+    "accuracy": 0.8026666666666666
+  },
+  "class_metrics": {
+    "accuracy": 0.9746666666666667,
+    "macro_f1": 0.97066590114487,
+    "log_loss": 0.131351038813591,
+    "confusion_matrix": [
+      [
+        303,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        45,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        46,
+        0,
+        0,
+        1,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        3,
+        0,
+        0,
+        37,
+        0,
+        0,
+        0,
+        0,
+        0,
+        2,
+        1
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        43,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        43,
+        0,
+        0,
+        0,
+        1,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        41,
+        1,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        45,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        47,
+        0,
+        0
+      ],
+      [
+        1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        42,
+        0
+      ],
+      [
+        3,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        0,
+        39
+      ]
+    ]
+  },
+  "features": [
+    "error_code",
+    "gateway",
+    "payment_method",
+    "category",
+    "http_status",
+    "amount",
+    "attempt_count",
+    "hour",
+    "stock_level",
+    "distance_km"
+  ],
+  "anomaly_features": [
+    "response_time_ms",
+    "gateway_errors_1min",
+    "retries",
+    "amount",
+    "hour"
+  ],
+  "usable_labelled_feedback": 0,
+  "feedback_note": "Operator preferences are recorded separately. No independently verified outcome labels exist; feedback is excluded from training.",
+  "limitations": [
+    "Synthetic distribution only; no production accuracy claim.",
+    "Error signals strongly identify the simulated class; classification accuracy is not action safety.",
+    "Probabilities are uncalibrated synthetic estimates.",
+    "Isolation Forest trains on healthy training observations only; decision_function < 0 is anomalous. Raw output is preserved; display normalization = clip(0.5 - raw, 0, 1).",
+    "Validation selects early stopping; test data is untouched until evaluation. All preprocessing fits training only."
+  ]
+}
